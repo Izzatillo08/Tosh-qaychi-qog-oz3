@@ -3,1172 +3,803 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tosh, Qaychi, Qog'oz — To'liq Versiya</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <title>SSP — Tosh, Qaychi, Qog'oz Onlayn O'yini</title>
+  <meta name="description" content="SSP — Tosh, Qaychi, Qog'oz onlayn veb-o'yini: umumiy reyting, login/parol, rasm yuklash, fon musiqasi va 3 xil o'yin rejimi." />
   <style>
-    /* Asosiy tipografiya va fon bezaklari */
+    :root {
+      --bg1: #090d16;
+      --bg2: #111827;
+      --card: rgba(17, 24, 39, 0.78);
+      --border: rgba(255, 255, 255, 0.12);
+      --accent: #38bdf8;
+      --accent2: #818cf8;
+      --good: #34d399;
+      --bad: #f87171;
+      --warn: #fbbf24;
+      --text: #f8fafc;
+      --muted: #94a3b8;
+    }
+    * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
     body {
-      font-family: 'Inter', sans-serif;
-      background: radial-gradient(circle at 15% 15%, #1e293b 0%, #0f172a 55%, #020617 100%);
-      color: #f8fafc;
+      margin: 0;
       min-height: 100vh;
-      overflow-x: hidden;
+      background: radial-gradient(circle at 15% 15%, #1e293b 0%, var(--bg1) 55%, #05080f 100%);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
     }
-
-    /* Yumshoq suzuvchi animatsiya va tugma effektlari */
-    @keyframes popIn {
-      0% { opacity: 0; transform: translateY(10px) scale(0.97); }
-      100% { opacity: 1; transform: translateY(0) scale(1); }
+    .app {
+      width: 100%;
+      max-width: 560px;
+      background: var(--card);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.55);
     }
-
-    .anim-pop {
-      animation: popIn 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 14px;
+      flex-wrap: wrap;
     }
-
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .badge {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #090d16;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      letter-spacing: 0.5px;
+    }
+    h1 { margin: 0; font-size: 20px; }
+    .audio-bar {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+      background: rgba(15, 23, 42, 0.7);
+      border: 1px solid var(--border);
+      padding: 8px 10px;
+      border-radius: 14px;
+      margin-bottom: 16px;
+    }
+    .audio-bar button, .audio-bar select {
+      padding: 6px 10px;
+      font-size: 13px;
+      border-radius: 8px;
+      margin: 0;
+      width: auto;
+    }
+    .status-bar {
+      min-height: 20px;
+      font-size: 13px;
+      text-align: center;
+      margin-bottom: 10px;
+      color: var(--warn);
+    }
+    .hidden { display: none !important; }
+    label { display: block; font-size: 13px; color: var(--muted); margin: 8px 0 4px; }
+    input, select, button {
+      width: 100%;
+      padding: 11px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      font-size: 15px;
+      outline: none;
+      transition: 0.2s;
+    }
+    input, select {
+      background: rgba(15, 23, 42, 0.9);
+      color: var(--text);
+    }
+    input:focus, select:focus { border-color: var(--accent); }
+    button {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      color: #fff;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .btn-sec { background: rgba(51, 65, 85, 0.85); }
+    .btn-danger { background: rgba(220, 38, 38, 0.8); }
+    .avatar-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+      background: rgba(15, 23, 42, 0.65);
+      padding: 10px;
+      border-radius: 14px;
+      border: 1px solid var(--border);
+    }
+    .avatar-preview {
+      width: 54px;
+      height: 54px;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      border: 2px solid var(--accent);
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    .avatar-preview img { width: 100%; height: 100%; object-fit: cover; }
+    .preset-avatars { display: flex; gap: 6px; margin-top: 6px; }
+    .preset-btn {
+      width: 34px; height: 34px; padding: 0; margin: 0;
+      border-radius: 50%; background: #1e293b; font-size: 18px;
+    }
+    .profile-card {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(15, 23, 42, 0.8);
+      padding: 12px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+    .modes {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 10px 0 14px;
+    }
+    .mode-btn {
+      margin: 0;
+      padding: 10px 6px;
+      font-size: 13px;
+      background: rgba(30, 41, 59, 0.85);
+      border: 1px solid var(--border);
+    }
+    .mode-btn.active {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .choices {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin: 14px 0;
+    }
     .choice-btn {
-      transition: transform 0.16s ease, box-shadow 0.2s ease, border-color 0.2s ease, background-color 0.2s ease;
+      margin: 0;
+      padding: 18px 8px;
+      font-size: 16px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 2px solid rgba(56, 189, 248, 0.35);
     }
-
     .choice-btn:hover {
-      transform: translateY(-4px) scale(1.02);
-      box-shadow: 0 12px 28px -6px rgba(56, 189, 248, 0.35);
+      border-color: var(--accent);
+      background: rgba(56, 189, 248, 0.16);
     }
-
-    .choice-btn:active {
-      transform: translateY(1px) scale(0.98);
+    .choice-emoji { font-size: 30px; display: block; margin-bottom: 4px; }
+    .result-box {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 14px;
+      text-align: center;
+      min-height: 78px;
     }
-
-    .drop-zone-active {
-      border-color: #38bdf8 !important;
-      background-color: rgba(56, 189, 248, 0.14) !important;
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 6px;
+      margin-top: 12px;
+      text-align: center;
+    }
+    .stat-pill {
+      background: rgba(30, 41, 59, 0.65);
+      padding: 8px 4px;
+      border-radius: 10px;
+      font-size: 12px;
+    }
+    .stat-pill strong { display: block; font-size: 16px; margin-top: 2px; }
+    .table-wrap {
+      max-height: 330px;
+      overflow-y: auto;
+      margin-top: 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    th, td { padding: 9px 8px; text-align: left; border-bottom: 1px solid rgba(255,255,255,0.07); }
+    th { background: rgba(15, 23, 42, 0.95); color: var(--accent); position: sticky; top: 0; }
+    .user-cell { display: flex; align-items: center; gap: 8px; }
+    .mini-avatar {
+      width: 28px; height: 28px; border-radius: 50%; object-fit: cover;
+      background: #1e293b; display: inline-flex; align-items: center; justify-content: center;
+      font-size: 14px; overflow: hidden; flex-shrink: 0;
+    }
+    .mini-avatar img { width: 100%; height: 100%; object-fit: cover; }
+    .timer-badge {
+      display: inline-block;
+      background: rgba(251, 191, 36, 0.18);
+      color: var(--warn);
+      padding: 3px 10px;
+      border-radius: 99px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-top: 6px;
     }
   </style>
 </head>
-<body class="antialiased selection:bg-sky-400 selection:text-slate-950">
-  <!-- Xabar va ogohlantirish banneri (alert o'rniga) -->
-  <div id="toastBox" class="fixed top-4 right-4 z-50 max-w-sm w-[calc(100%-2rem)] sm:w-96 pointer-events-none hidden">
-    <div id="toastInner" class="pointer-events-auto rounded-2xl border px-4 py-3 shadow-2xl backdrop-blur-md flex items-start gap-3 text-sm font-medium anim-pop">
-      <span id="toastIcon" class="text-lg leading-none mt-0.5">ℹ️</span>
-      <p id="toastText" class="flex-1 leading-snug"></p>
-      <button type="button" onclick="hideToast()" class="text-xs opacity-70 hover:opacity-100 px-1.5 py-0.5 rounded-lg" aria-label="Yopish">✕</button>
+<body>
+  <div class="app">
+    <div class="header">
+      <div class="brand">
+        <span class="badge">SSP</span>
+        <h1>Tosh, Qaychi, Qog'oz</h1>
+      </div>
+      <span id="dbStatus" style="font-size:12px; color:#34d399;">● Supabase</span>
+    </div>
+
+    <div class="audio-bar">
+      <button id="musicToggle" class="btn-sec" onclick="toggleMusic()">🎵 Musiqa: O'chiq</button>
+      <select id="trackSelect" onchange="changeTrack()">
+        <option value="0">Trek 1: Kosmik Tinch</option>
+        <option value="1">Trek 2: Retro Arkada</option>
+        <option value="2">Trek 3: Fokus Ritm</option>
+      </select>
+      <button id="sfxToggle" class="btn-sec" onclick="toggleSfx()">🔊 Effektlar: Yoniq</button>
+    </div>
+
+    <div id="statusMsg" class="status-bar"></div>
+
+    <!-- KIRISH / RO'YXATDAN O'TISH -->
+    <div id="authView">
+      <label>Foydalanuvchi nomi (Login)</label>
+      <input type="text" id="loginUser" placeholder="Masalan: Izzatillo" maxlength="20" />
+
+      <label>Parol</label>
+      <input type="password" id="loginPass" placeholder="Parolingizni kiriting" maxlength="30" />
+
+      <label>Shaxsiy rasm yoki avatar (ixtiyoriy)</label>
+      <div class="avatar-box">
+        <div id="avatarPreview" class="avatar-preview">😎</div>
+        <div style="flex:1;">
+          <input type="file" id="avatarFile" accept="image/*" style="padding:6px; font-size:12px;" onchange="handleImageUpload(event)" />
+          <div class="preset-avatars">
+            <button type="button" class="preset-btn" onclick="setEmojiAvatar('😎')">😎</button>
+            <button type="button" class="preset-btn" onclick="setEmojiAvatar('🥷')">🥷</button>
+            <button type="button" class="preset-btn" onclick="setEmojiAvatar('🦁')">🦁</button>
+            <button type="button" class="preset-btn" onclick="setEmojiAvatar('🚀')">🚀</button>
+            <button type="button" class="preset-btn" onclick="setEmojiAvatar('👑')">👑</button>
+          </div>
+        </div>
+      </div>
+
+      <button id="authBtn" onclick="loginOrRegister()">🚀 Kirish / Ro'yxatdan o'tish</button>
+      <button class="btn-sec" onclick="openLeaderboard()">🏆 Umumiy reytingni ko'rish</button>
+    </div>
+
+    <!-- O'YIN BO'LIMI -->
+    <div id="gameView" class="hidden">
+      <div class="profile-card">
+        <div class="user-cell">
+          <div id="playerAvatar" class="avatar-preview" style="width:44px; height:44px; font-size:20px;">😎</div>
+          <div>
+            <strong id="playerNameDisplay" style="font-size:16px;">O'yinchi</strong>
+            <div style="font-size:12px; color:var(--muted);" id="modeDesc">Oddiy rejim</div>
+          </div>
+        </div>
+        <div style="display:flex; gap:6px;">
+          <button class="btn-sec" style="margin:0; padding:8px 10px; font-size:13px;" onclick="openLeaderboard()">🏆 Reyting</button>
+          <button class="btn-danger" style="margin:0; padding:8px 10px; font-size:13px;" onclick="logout()">Chiqish</button>
+        </div>
+      </div>
+
+      <div class="modes">
+        <button id="mode0" class="mode-btn active" onclick="setMode(0)">1. Oddiy</button>
+        <button id="mode1" class="mode-btn" onclick="setMode(1)">2. Tezkor (5s)</button>
+        <button id="mode2" class="mode-btn" onclick="setMode(2)">3. Cheksiz xato</button>
+      </div>
+
+      <div style="text-align:center;">
+        <span id="timerBadge" class="timer-badge hidden">⏱ Qolgan vaqt: 5s</span>
+      </div>
+
+      <div class="choices">
+        <button class="choice-btn" onclick="playRound('Tosh')">
+          <span class="choice-emoji">🪨</span>Tosh
+        </button>
+        <button class="choice-btn" onclick="playRound('Qaychi')">
+          <span class="choice-emoji">✂️</span>Qaychi
+        </button>
+        <button class="choice-btn" onclick="playRound('Qog\'oz')">
+          <span class="choice-emoji">📄</span>Qog'oz
+        </button>
+      </div>
+
+      <div id="resultBox" class="result-box">
+        Yurish qilish uchun yuqoridagi tugmalardan birini bosing!
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-pill">G'alaba<strong id="statWins" style="color:var(--good);">0</strong></div>
+        <div class="stat-pill">Mag'lubiyat<strong id="statLosses" style="color:var(--bad);">0</strong></div>
+        <div class="stat-pill">Durang<strong id="statDraws" style="color:var(--accent);">0</strong></div>
+        <div class="stat-pill">Xato urinish<strong id="statMistakes" style="color:var(--warn);">0</strong></div>
+      </div>
+    </div>
+
+    <!-- REYTING BO'LIMI -->
+    <div id="leaderboardView" class="hidden">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h3 style="margin:0;">🏆 Umumiy Reyting (Barcha qurilmalar)</h3>
+        <button class="btn-sec" style="width:auto; margin:0; padding:6px 12px; font-size:13px;" onclick="loadLeaderboard()">🔄 Yangilash</button>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>O'yinchi</th>
+              <th>G'alaba</th>
+              <th>Mag'lub.</th>
+              <th>Durang</th>
+            </tr>
+          </thead>
+          <tbody id="leaderboardBody">
+            <tr><td colspan="5" style="text-align:center;">Yuklanmoqda...</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <button class="btn-sec" onclick="backFromLeaderboard()">⬅️ Orqaga</button>
     </div>
   </div>
 
-  <div class="min-h-screen w-full px-3 py-5 sm:px-6 sm:py-8 flex flex-col items-center">
-    <!-- YUQORI PANEL: O'yin nomi + Audio boshqaruv paneli -->
-    <header class="w-full max-w-5xl rounded-3xl bg-slate-900/80 border border-slate-800/90 backdrop-blur-xl p-4 sm:p-5 shadow-xl mb-6 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-      <div class="flex items-center gap-3.5">
-        <div class="w-12 h-12 rounded-2xl bg-gradient-to-br from-sky-400 via-indigo-500 to-purple-600 flex items-center justify-center text-2xl shadow-lg shrink-0">
-          🪨
-        </div>
-        <div>
-          <h1 class="text-xl sm:text-2xl font-extrabold tracking-tight text-white flex items-center gap-2 flex-wrap">
-            <span>Tosh, Qaychi, Qog'oz</span>
-            <span class="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-sky-500/15 text-sky-300 border border-sky-400/25">Tayyor v2.0</span>
-          </h1>
-          <p class="text-xs sm:text-sm text-slate-400">Login, shaxsiy rasm, fon musiqasi, 3 rejim va cheksiz xato imkoniyati</p>
-        </div>
-      </div>
-
-      <!-- Ichki Web Audio fon musiqasi va ovoz paneli -->
-      <div class="flex flex-wrap items-center gap-2 bg-slate-950/70 border border-slate-800 rounded-2xl p-2">
-        <button id="musicToggleBtn" type="button" onclick="toggleMusic()" class="px-3 py-2 rounded-xl bg-sky-500 hover:bg-sky-400 text-slate-950 font-semibold text-xs sm:text-sm flex items-center gap-1.5 transition cursor-pointer">
-          <span id="musicPlayIcon">▶️</span>
-          <span id="musicPlayLabel">Musiqa: O'chiq</span>
-        </button>
-
-        <select id="trackSelect" onchange="changeTrack(this.value)" title="Fon musiqasini tanlash" class="px-2.5 py-2 rounded-xl bg-slate-900 text-slate-200 border border-slate-700 text-xs sm:text-sm focus:outline-none focus:border-sky-400 cursor-pointer">
-          <option value="chill">🎵 Trek 1: Tinch Synth</option>
-          <option value="arcade">⚡ Trek 2: Tezkor Arkada</option>
-          <option value="zen">🌿 Trek 3: Cheksiz Zen</option>
-        </select>
-
-        <button id="sfxToggleBtn" type="button" onclick="toggleSfx()" title="Ovoz effektlari" class="px-3 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-medium text-xs sm:text-sm flex items-center gap-1 transition cursor-pointer">
-          <span id="sfxIcon">🔊</span>
-          <span id="sfxLabel" class="hidden sm:inline">Effektlar</span>
-        </button>
-      </div>
-    </header>
-
-    <!-- ASOSIY KONTENT KONTEYNERI -->
-    <main class="w-full max-w-5xl flex-1">
-      <!-- 1. LOGIN VA RO'YXATDAN O'TISH EKRANI -->
-      <section id="authSection" class="max-w-xl mx-auto rounded-3xl bg-slate-900/85 border border-slate-800 backdrop-blur-xl p-6 sm:p-8 shadow-2xl anim-pop">
-        <div class="text-center mb-6">
-          <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-sky-500/15 border border-sky-400/30 text-3xl mb-3">
-            🔐
-          </div>
-          <h2 class="text-2xl font-bold text-white">Hisobga kirish yoki yaratish</h2>
-          <p class="text-sm text-slate-400 mt-1">Barcha ma'lumotlar xavfsiz saqlanadi — hech qanday tashqi baza shart emas</p>
-        </div>
-
-        <!-- Kirish / Ro'yxatdan o'tish tablari -->
-        <div class="grid grid-cols-2 gap-2 p-1.5 rounded-2xl bg-slate-950 border border-slate-800 mb-6">
-          <button id="tabLogin" type="button" onclick="switchAuthTab('login')" class="py-2.5 rounded-xl font-semibold text-sm bg-sky-500 text-slate-950 transition cursor-pointer">
-            Kirish (Login)
-          </button>
-          <button id="tabRegister" type="button" onclick="switchAuthTab('register')" class="py-2.5 rounded-xl font-semibold text-sm text-slate-300 hover:text-white transition cursor-pointer">
-            Yangi hisob
-          </button>
-        </div>
-
-        <!-- Profil rasmi yuklash (ixtiyoriy, ro'yxatdan o'tishda yoki tezkor boshlashda) -->
-        <div class="mb-5">
-          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2">
-            Profil rasmi (ixtiyoriy — fayl tanlang, tashlang yoki namuna oling)
-          </label>
-          <div id="authDropZone" class="rounded-2xl border-2 border-dashed border-slate-700 hover:border-sky-400/70 bg-slate-950/60 p-4 transition flex flex-col sm:flex-row items-center gap-4">
-            <img id="authAvatarPreview" src="" alt="Avatar" class="w-16 h-16 rounded-2xl object-cover border border-slate-700 bg-slate-900 shrink-0" />
-            <div class="flex-1 text-center sm:text-left">
-              <p class="text-xs sm:text-sm text-slate-300 font-medium">Rasmni bu yerga sudrab tashlang yoki tanlang</p>
-              <p class="text-[11px] text-slate-400 mt-0.5">PNG, JPG, WEBP • Maksimal 600 KB (kattaroq rasm avtomatik siqiladi)</p>
-              <div class="flex flex-wrap justify-center sm:justify-start gap-2 mt-2.5">
-                <label class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-sky-300 cursor-pointer transition">
-                  📁 Rasm tanlash
-                  <input id="authAvatarInput" type="file" accept="image/*" class="hidden" onchange="handleAvatarFileChange(this.files, 'auth')" />
-                </label>
-                <button type="button" onclick="cyclePresetAvatar('auth')" class="px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-slate-200 cursor-pointer transition">
-                  🎨 Tayyor rasm
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Forma -->
-        <form id="authForm" onsubmit="handleAuthSubmit(event)" class="space-y-4">
-          <div>
-            <label for="authUsername" class="block text-sm font-medium text-slate-300 mb-1.5">Foydalanuvchi nomi (Login)</label>
-            <input id="authUsername" type="text" required maxlength="20" placeholder="Masalan: Sardor_07" class="w-full px-4 py-3 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-sky-400" />
-          </div>
-
-          <div>
-            <label for="authPassword" class="block text-sm font-medium text-slate-300 mb-1.5">Parol</label>
-            <div class="relative">
-              <input id="authPassword" type="password" required minlength="3" maxlength="40" placeholder="Kamida 3 ta belgi" class="w-full px-4 py-3 pr-12 rounded-xl bg-slate-950 border border-slate-700 text-white placeholder-slate-500 focus:outline-none focus:border-sky-400" />
-              <button type="button" onclick="togglePasswordVisibility()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-sm px-1.5 py-1 cursor-pointer" title="Parolni ko'rsatish/yashirish">
-                👁️
-              </button>
-            </div>
-          </div>
-
-          <button id="authSubmitBtn" type="submit" class="w-full py-3.5 rounded-2xl bg-gradient-to-r from-sky-400 to-indigo-500 hover:from-sky-300 hover:to-indigo-400 text-slate-950 font-extrabold text-base shadow-lg transition cursor-pointer">
-            🚀 Hisobga kirish
-          </button>
-        </form>
-
-        <!-- Bir bosishda tezkor kirish (hech narsa yozmasdan ham darhol sinash uchun) -->
-        <div class="mt-6 pt-5 border-t border-slate-800">
-          <button type="button" onclick="quickDemoLogin()" class="w-full py-3 rounded-2xl bg-emerald-500/15 hover:bg-emerald-500/25 border border-emerald-400/35 text-emerald-300 font-bold text-sm transition cursor-pointer">
-            ⚡ Tezkor kirish (Mehmon profili bilan darhol boshlash)
-          </button>
-        </div>
-      </section>
-
-      <!-- 2. ASOSIY O'YIN VA LOBBI EKRANI -->
-      <section id="gameSection" class="hidden space-y-6 anim-pop">
-        <!-- Foydalanuvchi profil kartasi -->
-        <div class="rounded-3xl bg-slate-900/85 border border-slate-800 backdrop-blur-xl p-4 sm:p-6 shadow-xl flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div class="flex items-center gap-4">
-            <img id="profileAvatarImg" src="" alt="Profil rasmi" class="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl object-cover border-2 border-sky-400/50 bg-slate-950 shrink-0 shadow-md" />
-            <div>
-              <div class="flex items-center gap-2 flex-wrap">
-                <h2 id="profileNameDisplay" class="text-lg sm:text-xl font-extrabold text-white"></h2>
-                <span id="activeModeBadge" class="text-xs font-bold px-2.5 py-1 rounded-full bg-sky-500/15 text-sky-300 border border-sky-400/30">
-                  1-Rejim: Oddiy
-                </span>
-              </div>
-              <p class="text-xs sm:text-sm text-slate-400 mt-1">
-                G'alaba: <strong id="statWins" class="text-emerald-400">0</strong> •
-                Xato / Mag'lubiyat: <strong id="statLosses" class="text-rose-400">0</strong> •
-                Durang: <strong id="statDraws" class="text-amber-300">0</strong> •
-                Ketma-ket yutuq: <strong id="statStreak" class="text-sky-300">0</strong>
-              </p>
-            </div>
-          </div>
-
-          <!-- Profil rasmini yangilash va chiqish -->
-          <div class="flex flex-wrap items-center gap-2">
-            <label class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs sm:text-sm font-semibold text-sky-300 cursor-pointer transition">
-              🖼️ Rasmni o'zgartirish
-              <input id="profileAvatarInput" type="file" accept="image/*" class="hidden" onchange="handleAvatarFileChange(this.files, 'profile')" />
-            </label>
-            <button type="button" onclick="cyclePresetAvatar('profile')" class="px-3.5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs sm:text-sm font-semibold text-slate-200 cursor-pointer transition">
-              🎭 Boshqa avatar
-            </button>
-            <button type="button" onclick="logoutUser()" class="px-3.5 py-2.5 rounded-xl bg-rose-500/15 hover:bg-rose-500/25 border border-rose-500/30 text-rose-300 text-xs sm:text-sm font-semibold cursor-pointer transition">
-              🚪 Chiqish
-            </button>
-          </div>
-        </div>
-
-        <!-- 3 XIL O'YIN REJIMI TANLASH -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <!-- Rejim 1 -->
-          <button id="modeCard-classic" type="button" onclick="selectMode('classic')" class="text-left rounded-3xl p-5 bg-slate-900/80 border-2 border-sky-400 shadow-lg transition cursor-pointer">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-2xl">🎯</span>
-              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-sky-500/20 text-sky-300">1-Rejim</span>
-            </div>
-            <h3 class="text-base sm:text-lg font-bold text-white">Oddiy (Klassik)</h3>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">Erkin va sokin o'yin. Har bir raundda g'alaba, durang yoki mag'lubiyat hisoblanadi.</p>
-          </button>
-
-          <!-- Rejim 2 -->
-          <button id="modeCard-blitz" type="button" onclick="selectMode('blitz')" class="text-left rounded-3xl p-5 bg-slate-900/75 border-2 border-slate-800 hover:border-amber-400/60 transition cursor-pointer">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-2xl">⏱️</span>
-              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-500/15 text-amber-300">2-Rejim</span>
-            </div>
-            <h3 class="text-base sm:text-lg font-bold text-white">Tezkor (5 soniya taymer)</h3>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">Har tanlovga 5 soniya beriladi. Vaqt tugasa raund xato/mag'lubiyat bilan tugaydi, o'yin davom etadi.</p>
-          </button>
-
-          <!-- Rejim 3 -->
-          <button id="modeCard-unlimited" type="button" onclick="selectMode('unlimited')" class="text-left rounded-3xl p-5 bg-slate-900/75 border-2 border-slate-800 hover:border-emerald-400/60 transition cursor-pointer">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-2xl">♾️</span>
-              <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-500/15 text-emerald-300">3-Rejim</span>
-            </div>
-            <h3 class="text-base sm:text-lg font-bold text-white">Cheksiz xato (Mashq)</h3>
-            <p class="text-xs sm:text-sm text-slate-400 mt-1">Xato qilish chegarasiz! Xato qilsangiz ham bloklanmaysiz — xohlagancha urinib ko'ring va rekord o'rnating.</p>
-          </button>
-        </div>
-
-        <!-- O'YIN MAYDONI + REYTING JADVALI -->
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
-          <!-- Chap ustun (7/12): Tanlov tugmalari va natija -->
-          <div class="lg:col-span-7 rounded-3xl bg-slate-900/85 border border-slate-800 backdrop-blur-xl p-5 sm:p-7 shadow-xl">
-            <!-- Rejimga xos holat satri -->
-            <div class="flex flex-wrap items-center justify-between gap-2 pb-4 mb-5 border-b border-slate-800">
-              <div class="flex items-center gap-2">
-                <span class="text-xs uppercase tracking-wider font-bold text-slate-400">Rejim holati:</span>
-                <span id="modeStatusText" class="text-sm font-bold text-sky-300">Oddiy rejim faol</span>
-              </div>
-              <div id="blitzTimerBox" class="hidden items-center gap-2 px-3 py-1 rounded-xl bg-amber-500/15 border border-amber-400/40 text-amber-300 font-extrabold text-sm">
-                <span>⏳</span>
-                <span id="blitzTimerValue">5.0s</span>
-              </div>
-              <div id="unlimitedMistakeBox" class="hidden items-center gap-2 px-3 py-1 rounded-xl bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 font-bold text-xs sm:text-sm">
-                <span>♾️ Xatolar: <strong id="unlimitedMistakeCount">0</strong> (Cheksiz ruxsat)</span>
-              </div>
-            </div>
-
-            <!-- 3 ta asosiy tanlov: Tosh, Qaychi, Qog'oz -->
-            <div class="grid grid-cols-3 gap-3 sm:gap-4 mb-6">
-              <button type="button" onclick="playRound('Tosh')" class="choice-btn rounded-2xl bg-slate-950/90 hover:bg-slate-900 border-2 border-slate-700 hover:border-sky-400 p-4 sm:p-6 flex flex-col items-center justify-center gap-2 cursor-pointer">
-                <span class="text-4xl sm:text-5xl">🪨</span>
-                <span class="font-bold text-sm sm:text-base text-white">Tosh</span>
-              </button>
-
-              <button type="button" onclick="playRound('Qaychi')" class="choice-btn rounded-2xl bg-slate-950/90 hover:bg-slate-900 border-2 border-slate-700 hover:border-sky-400 p-4 sm:p-6 flex flex-col items-center justify-center gap-2 cursor-pointer">
-                <span class="text-4xl sm:text-5xl">✂️</span>
-                <span class="font-bold text-sm sm:text-base text-white">Qaychi</span>
-              </button>
-
-              <button type="button" onclick="playRound('Qog\'oz')" class="choice-btn rounded-2xl bg-slate-950/90 hover:bg-slate-900 border-2 border-slate-700 hover:border-sky-400 p-4 sm:p-6 flex flex-col items-center justify-center gap-2 cursor-pointer">
-                <span class="text-4xl sm:text-5xl">📄</span>
-                <span class="font-bold text-sm sm:text-base text-white">Qog'oz</span>
-              </button>
-            </div>
-
-            <!-- Natija oynasi -->
-            <div id="roundResultCard" class="rounded-2xl bg-slate-950 border border-slate-800 p-4 sm:p-5 text-center space-y-2">
-              <p class="text-xs uppercase tracking-wider text-slate-400 font-semibold">Raund natijasi</p>
-              <div id="roundChoicesDisplay" class="text-sm sm:text-base text-slate-300 font-medium">
-                Tosh, Qaychi yoki Qog'ozni tanlang
-              </div>
-              <div id="roundVerdictDisplay" class="text-lg sm:text-xl font-extrabold text-sky-400">
-                O'yin boshlashga tayyor!
-              </div>
-              <p id="roundHintDisplay" class="text-xs text-slate-400">
-                Istalgan rejimda cheksiz o'ynashingiz mumkin.
-              </p>
-            </div>
-          </div>
-
-          <!-- O'ng ustun (5/12): Reyting jadvali -->
-          <div class="lg:col-span-5 rounded-3xl bg-slate-900/85 border border-slate-800 backdrop-blur-xl p-5 sm:p-6 shadow-xl">
-            <div class="flex items-center justify-between gap-2 mb-4">
-              <div>
-                <h3 class="text-lg font-extrabold text-white flex items-center gap-2">
-                  <span>🏆</span>
-                  <span>Reyting jadvali</span>
-                </h3>
-                <p class="text-xs text-slate-400">G'alabalar va rekord bo'yicha saralangan</p>
-              </div>
-              <div class="flex items-center gap-1.5">
-                <button type="button" onclick="toggleSortOrder()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-sky-300 cursor-pointer transition">
-                  ↕️ <span id="sortOrderLabel">G'alaba ↓</span>
-                </button>
-                <button type="button" onclick="resetCurrentUserStats()" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-rose-500/20 text-xs font-semibold text-rose-300 cursor-pointer transition" title="Mening statistikamni nolga tushirish">
-                  🔄 Nolga
-                </button>
-              </div>
-            </div>
-
-            <div class="overflow-x-auto">
-              <table class="w-full text-left border-collapse text-xs sm:text-sm">
-                <thead>
-                  <tr class="border-b border-slate-800 text-slate-400">
-                    <th class="py-2.5 px-2">#</th>
-                    <th class="py-2.5 px-2">O'yinchi</th>
-                    <th class="py-2.5 px-2 text-right">G'alaba</th>
-                    <th class="py-2.5 px-2 text-right">Xato</th>
-                    <th class="py-2.5 px-2 text-right">Rekord</th>
-                  </tr>
-                </thead>
-                <tbody id="leaderboardBody" class="divide-y divide-slate-800/70"></tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-  </div>
-
   <script>
-    /**
-     * XAVFSIZ XOTIRA (localStorage + xotira zaxirasi)
-     * Agar brauzerda localStorage cheklangan yoki buzilgan bo'lsa, xato bermasdan
-     * vaqtinchalik xotira (memoryFallback) ga o'tadi.
-     */
-    const STORAGE_KEY = "tqq_pro_state_v2";
-    const memoryFallback = {};
+    // Sizning Supabase sozlamalaringiz (hech narsani o'zgartirish shart emas)
+    const SUPABASE_URL = "https://avwsdynzohjmxkfkgvhmn.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_8UpSKkjX2KBg4FEW6HCV3Q_f8g1HIzY";
+    const TABLE_NAME = "reyting";
 
-    const PRESET_AVATARS = [
-      "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="28" fill="#0ea5e9"/><circle cx="60" cy="46" r="22" fill="#f8fafc"/><path d="M22 104c4-22 20-34 38-34s34 12 38 34" fill="#f8fafc"/></svg>'),
-      "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="28" fill="#8b5cf6"/><circle cx="60" cy="46" r="22" fill="#fef08a"/><path d="M22 104c4-22 20-34 38-34s34 12 38 34" fill="#fef08a"/></svg>'),
-      "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="28" fill="#10b981"/><circle cx="60" cy="46" r="22" fill="#ecfdf5"/><path d="M22 104c4-22 20-34 38-34s34 12 38 34" fill="#ecfdf5"/></svg>'),
-      "data:image/svg+xml;utf8," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><rect width="120" height="120" rx="28" fill="#f59e0b"/><circle cx="60" cy="46" r="22" fill="#fffbeb"/><path d="M22 104c4-22 20-34 38-34s34 12 38 34" fill="#fffbeb"/></svg>')
+    let currentUser = null;
+    let selectedAvatar = "😎";
+    let gameMode = 0; // 0: Oddiy, 1: Tezkor (5s), 2: Cheksiz xato
+    let mistakeCounter = 0;
+    let timerInterval = null;
+    let timeLeft = 5;
+    let supportsPasswordColumn = true;
+
+    // --- WEB AUDIO (FON MUSIQASI VA OVOZ EFFEKTLARI) ---
+    let audioCtx = null;
+    let musicOn = false;
+    let sfxOn = true;
+    let musicTimer = null;
+    let stepIdx = 0;
+
+    const tracks = [
+      [261.63, 329.63, 392.00, 493.88, 392.00, 329.63],
+      [329.63, 392.00, 523.25, 493.88, 392.00, 349.23],
+      [220.00, 261.63, 329.63, 293.66, 261.63, 246.94]
     ];
 
-    function safeReadStorage(key, fallbackValue) {
+    function ensureAudio() {
+      if (!audioCtx) {
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      }
+      if (audioCtx.state === "suspended") audioCtx.resume();
+    }
+
+    function playTone(freq, duration = 0.18, type = "sine", vol = 0.05) {
       try {
-        const raw = window.localStorage.getItem(key);
-        if (!raw) return fallbackValue;
-        const parsed = JSON.parse(raw);
-        return parsed && typeof parsed === "object" ? parsed : fallbackValue;
-      } catch (err) {
-        return memoryFallback[key] || fallbackValue;
-      }
-    }
-
-    function safeWriteStorage(key, value) {
-      try {
-        const serialized = JSON.stringify(value);
-        window.localStorage.setItem(key, serialized);
-        memoryFallback[key] = value;
-        return true;
-      } catch (err) {
-        // Masalan, QuotaExceededError yuz bersa, xotiraga saqlab davom etamiz
-        memoryFallback[key] = value;
-        showToast("Xotira cheklovi sabab ma'lumot sessiya xotirasida saqlandi.", "warn");
-        return false;
-      }
-    }
-
-    // Dastlabki holatni yaratish va tiklash
-    function createInitialState() {
-      return {
-        currentUser: null,
-        authTab: "login",
-        selectedMode: "classic",
-        sortBy: "winsDesc",
-        draftAvatar: PRESET_AVATARS[0],
-        presetIndex: 0,
-        audio: {
-          musicPlaying: false,
-          sfxEnabled: true,
-          track: "chill"
-        },
-        users: {
-          "Mehmon": {
-            username: "Mehmon",
-            password: "123",
-            avatar: PRESET_AVATARS[0],
-            wins: 2,
-            losses: 1,
-            draws: 1,
-            streak: 1,
-            bestStreak: 2,
-            unlimitedMistakes: 1
-          }
-        }
-      };
-    }
-
-    let appState = safeReadStorage(STORAGE_KEY, createInitialState());
-    if (!appState.users || typeof appState.users !== "object") {
-      appState = createInitialState();
-    }
-    if (!appState.draftAvatar) {
-      appState.draftAvatar = PRESET_AVATARS[0];
-    }
-
-    function persistState() {
-      safeWriteStorage(STORAGE_KEY, appState);
-    }
-
-    // Xabar ko'rsatish (toast)
-    let toastTimer = null;
-    function showToast(message, type = "info") {
-      const box = document.getElementById("toastBox");
-      const inner = document.getElementById("toastInner");
-      const icon = document.getElementById("toastIcon");
-      const text = document.getElementById("toastText");
-      if (!box || !inner || !icon || !text) return;
-
-      text.textContent = message;
-      inner.className = "pointer-events-auto rounded-2xl border px-4 py-3 shadow-2xl backdrop-blur-md flex items-start gap-3 text-sm font-medium anim-pop ";
-
-      if (type === "error") {
-        inner.className += "bg-rose-950/90 border-rose-500/50 text-rose-100";
-        icon.textContent = "⚠️";
-      } else if (type === "warn") {
-        inner.className += "bg-amber-950/90 border-amber-500/50 text-amber-100";
-        icon.textContent = "⚡";
-      } else if (type === "success") {
-        inner.className += "bg-emerald-950/90 border-emerald-500/50 text-emerald-100";
-        icon.textContent = "✅";
-      } else {
-        inner.className += "bg-slate-900/95 border-sky-500/40 text-slate-100";
-        icon.textContent = "ℹ️";
-      }
-
-      box.classList.remove("hidden");
-      if (toastTimer) clearTimeout(toastTimer);
-      toastTimer = setTimeout(() => {
-        box.classList.add("hidden");
-      }, 3600);
-    }
-
-    function hideToast() {
-      const box = document.getElementById("toastBox");
-      if (box) box.classList.add("hidden");
-    }
-
-    /**
-     * WEB AUDIO API — ICHKI FON MUSIQASI VA OVOZ EFFEKTLARI
-     * Tashqi audio fayllarsiz, brauzer ichida sintez qilinadi.
-     */
-    const audioEngine = {
-      ctx: null,
-      loopTimer: null,
-      step: 0,
-      tracks: {
-        chill: [261.63, 329.63, 392.00, 493.88, 392.00, 329.63, 293.66, 349.23],
-        arcade: [329.63, 440.00, 523.25, 659.25, 523.25, 440.00, 587.33, 659.25],
-        zen: [220.00, 277.18, 329.63, 440.00, 329.63, 277.18, 246.94, 329.63]
-      },
-      ensureContext() {
-        try {
-          if (!this.ctx) {
-            const AudioCtx = window.AudioContext || window.webkitAudioContext;
-            if (!AudioCtx) return null;
-            this.ctx = new AudioCtx();
-          }
-          if (this.ctx.state === "suspended") {
-            this.ctx.resume();
-          }
-          return this.ctx;
-        } catch (e) {
-          return null;
-        }
-      },
-      playTone(freq, duration = 0.18, type = "sine", volume = 0.05) {
-        try {
-          const ctx = this.ensureContext();
-          if (!ctx) return;
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = type;
-          osc.frequency.setValueAtTime(freq, ctx.currentTime);
-
-          gain.gain.setValueAtTime(0.0001, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(volume, ctx.currentTime + 0.02);
-          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
-
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-
-          osc.start();
-          osc.stop(ctx.currentTime + duration + 0.02);
-        } catch (e) {
-          // Audio xatosi o'yinni to'xtatmasin
-        }
-      },
-      startMusic() {
-        this.stopMusicLoopOnly();
-        const intervalMs = appState.audio.track === "arcade" ? 240 : 420;
-        this.loopTimer = setInterval(() => {
-          if (!appState.audio.musicPlaying) return;
-          const notes = this.tracks[appState.audio.track] || this.tracks.chill;
-          const freq = notes[this.step % notes.length];
-          this.step += 1;
-          const waveType = appState.audio.track === "arcade" ? "triangle" : "sine";
-          this.playTone(freq, intervalMs / 1000 * 0.85, waveType, 0.032);
-        }, intervalMs);
-      },
-      stopMusicLoopOnly() {
-        if (this.loopTimer) {
-          clearInterval(this.loopTimer);
-          this.loopTimer = null;
-        }
-      },
-      sfx(kind) {
-        if (!appState.audio.sfxEnabled) return;
-        if (kind === "win") {
-          this.playTone(523.25, 0.12, "triangle", 0.08);
-          setTimeout(() => this.playTone(659.25, 0.14, "triangle", 0.08), 90);
-          setTimeout(() => this.playTone(783.99, 0.22, "triangle", 0.09), 180);
-        } else if (kind === "lose") {
-          this.playTone(261.63, 0.16, "sawtooth", 0.05);
-          setTimeout(() => this.playTone(196.00, 0.24, "sawtooth", 0.05), 120);
-        } else if (kind === "draw") {
-          this.playTone(440.00, 0.14, "sine", 0.06);
-        } else {
-          this.playTone(392.00, 0.08, "sine", 0.05);
-        }
-      }
-    };
-
-    function syncAudioUI() {
-      const playIcon = document.getElementById("musicPlayIcon");
-      const playLabel = document.getElementById("musicPlayLabel");
-      const trackSelect = document.getElementById("trackSelect");
-      const sfxIcon = document.getElementById("sfxIcon");
-
-      if (trackSelect) trackSelect.value = appState.audio.track;
-      if (playIcon && playLabel) {
-        if (appState.audio.musicPlaying) {
-          playIcon.textContent = "⏸️";
-          playLabel.textContent = "Musiqa: Yonig'";
-        } else {
-          playIcon.textContent = "▶️";
-          playLabel.textContent = "Musiqa: O'chiq";
-        }
-      }
-      if (sfxIcon) {
-        sfxIcon.textContent = appState.audio.sfxEnabled ? "🔊" : "🔇";
-      }
+        ensureAudio();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {}
     }
 
     function toggleMusic() {
-      appState.audio.musicPlaying = !appState.audio.musicPlaying;
-      if (appState.audio.musicPlaying) {
-        audioEngine.ensureContext();
-        audioEngine.startMusic();
-        showToast("Fon musiqasi yoqildi.", "success");
+      musicOn = !musicOn;
+      document.getElementById("musicToggle").textContent = musicOn ? "🎵 Musiqa: Yoniq" : "🎵 Musiqa: O'chiq";
+      if (musicOn) {
+        ensureAudio();
+        startMusicLoop();
       } else {
-        audioEngine.stopMusicLoopOnly();
-        showToast("Fon musiqasi to'xtatildi.", "info");
+        clearInterval(musicTimer);
       }
-      persistState();
-      syncAudioUI();
     }
 
-    function changeTrack(trackName) {
-      if (!audioEngine.tracks[trackName]) return;
-      appState.audio.track = trackName;
-      appState.step = 0;
-      if (appState.audio.musicPlaying) {
-        audioEngine.startMusic();
-      }
-      persistState();
-      syncAudioUI();
-      showToast("Musiqa treki almashtirildi.", "info");
+    function changeTrack() {
+      stepIdx = 0;
+      if (musicOn) startMusicLoop();
+    }
+
+    function startMusicLoop() {
+      clearInterval(musicTimer);
+      const trackNum = parseInt(document.getElementById("trackSelect").value, 10) || 0;
+      const notes = tracks[trackNum];
+      musicTimer = setInterval(() => {
+        if (!musicOn) return;
+        const note = notes[stepIdx % notes.length];
+        playTone(note, 0.35, "triangle", 0.035);
+        stepIdx++;
+      }, 420);
     }
 
     function toggleSfx() {
-      appState.audio.sfxEnabled = !appState.audio.sfxEnabled;
-      persistState();
-      syncAudioUI();
-      if (appState.audio.sfxEnabled) {
-        audioEngine.sfx("click");
-      }
+      sfxOn = !sfxOn;
+      document.getElementById("sfxToggle").textContent = sfxOn ? "🔊 Effektlar: Yoniq" : "🔇 Effektlar: O'chiq";
     }
 
-    /**
-     * PROFIL RASMI YUKLASH (FAYL, DRAG & DROP, TAYYOR AVATAR)
-     * Katta hajmli rasmlar canvas orqali avtomatik siqiladi va xatolar ushlanadi.
-     */
-    function cyclePresetAvatar(target) {
-      appState.presetIndex = (appState.presetIndex + 1) % PRESET_AVATARS.length;
-      const avatarDataUrl = PRESET_AVATARS[appState.presetIndex];
-
-      if (target === "auth") {
-        appState.draftAvatar = avatarDataUrl;
-        const preview = document.getElementById("authAvatarPreview");
-        if (preview) preview.src = avatarDataUrl;
-        persistState();
-      } else if (target === "profile" && appState.currentUser && appState.users[appState.currentUser]) {
-        appState.users[appState.currentUser].avatar = avatarDataUrl;
-        const img = document.getElementById("profileAvatarImg");
-        if (img) img.src = avatarDataUrl;
-        persistState();
-        renderLeaderboard();
-      }
-      audioEngine.sfx("click");
-    }
-
-    function compressImageToDataUrl(file, callback) {
-      try {
-        if (!file || !file.type || !file.type.startsWith("image/")) {
-          showToast("Faqat rasm faylini tanlang (PNG, JPG, WEBP).", "error");
-          return;
-        }
-        if (file.size > 6 * 1024 * 1024) {
-          showToast("Rasm hajmi 6 MB dan katta bo'lmasligi kerak.", "error");
-          return;
-        }
-
-        const reader = new FileReader();
-        reader.onerror = function () {
-          showToast("Rasm faylini o'qishda xatolik yuz berdi.", "error");
-        };
-        reader.onload = function (event) {
-          const img = new Image();
-          img.onerror = function () {
-            showToast("Rasm fayli shikastlangan yoki qo'llab-quvvatlanmaydi.", "error");
-          };
-          img.onload = function () {
-            try {
-              const maxSide = 220;
-              let w = img.width || 120;
-              let h = img.height || 120;
-              if (w > h && w > maxSide) {
-                h = Math.round((h * maxSide) / w);
-                w = maxSide;
-              } else if (h >= w && h > maxSide) {
-                w = Math.round((w * maxSide) / h);
-                h = maxSide;
-              }
-              const canvas = document.createElement("canvas");
-              canvas.width = w;
-              canvas.height = h;
-              const ctx = canvas.getContext("2d");
-              ctx.drawImage(img, 0, 0, w, h);
-              const compressed = canvas.toDataURL("image/jpeg", 0.78);
-              callback(compressed);
-            } catch (err) {
-              // Canvas ruxsat bermasa (ba'zi maxsus muhitlarda) asl dataURL ni sinab ko'ramiz
-              callback(event.target.result);
-            }
-          };
-          img.src = event.target.result;
-        };
-        reader.readAsDataURL(file);
-      } catch (err) {
-        showToast("Rasm yuklashda kutilmagan xato yuz berdi.", "error");
-      }
-    }
-
-    function handleAvatarFileChange(fileList, target) {
-      if (!fileList || !fileList.length) return;
-      compressImageToDataUrl(fileList[0], (dataUrl) => {
-        if (target === "auth") {
-          appState.draftAvatar = dataUrl;
-          const preview = document.getElementById("authAvatarPreview");
-          if (preview) preview.src = dataUrl;
-          persistState();
-          showToast("Profil rasmi tayyorlandi!", "success");
-        } else if (target === "profile" && appState.currentUser && appState.users[appState.currentUser]) {
-          appState.users[appState.currentUser].avatar = dataUrl;
-          const img = document.getElementById("profileAvatarImg");
-          if (img) img.src = dataUrl;
-          persistState();
-          renderLeaderboard();
-          showToast("Profil rasmi yangilandi!", "success");
-        }
-      });
-    }
-
-    function setupDragAndDrop() {
-      const dropZone = document.getElementById("authDropZone");
-      if (!dropZone) return;
-
-      ["dragenter", "dragover"].forEach((evtName) => {
-        dropZone.addEventListener(evtName, (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          dropZone.classList.add("drop-zone-active");
-        });
-      });
-
-      ["dragleave", "drop"].forEach((evtName) => {
-        dropZone.addEventListener(evtName, (e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          dropZone.classList.remove("drop-zone-active");
-        });
-      });
-
-      dropZone.addEventListener("drop", (e) => {
-        const files = e.dataTransfer && e.dataTransfer.files;
-        if (files && files.length > 0) {
-          handleAvatarFileChange(files, "auth");
-        }
-      });
-    }
-
-    /**
-     * LOGIN VA RO'YXATDAN O'TISH MANTIG'I
-     */
-    function switchAuthTab(tab) {
-      appState.authTab = tab === "register" ? "register" : "login";
-      const tabLogin = document.getElementById("tabLogin");
-      const tabRegister = document.getElementById("tabRegister");
-      const submitBtn = document.getElementById("authSubmitBtn");
-
-      if (appState.authTab === "login") {
-        tabLogin.className = "py-2.5 rounded-xl font-semibold text-sm bg-sky-500 text-slate-950 transition cursor-pointer";
-        tabRegister.className = "py-2.5 rounded-xl font-semibold text-sm text-slate-300 hover:text-white transition cursor-pointer";
-        submitBtn.textContent = "🚀 Hisobga kirish";
+    function playSfx(kind) {
+      if (!sfxOn) return;
+      if (kind === "win") {
+        playTone(523.25, 0.14, "sine", 0.08);
+        setTimeout(() => playTone(659.25, 0.2, "sine", 0.08), 110);
+      } else if (kind === "lose") {
+        playTone(246.94, 0.18, "sawtooth", 0.05);
+        setTimeout(() => playTone(196.00, 0.24, "sawtooth", 0.05), 130);
       } else {
-        tabRegister.className = "py-2.5 rounded-xl font-semibold text-sm bg-sky-500 text-slate-950 transition cursor-pointer";
-        tabLogin.className = "py-2.5 rounded-xl font-semibold text-sm text-slate-300 hover:text-white transition cursor-pointer";
-        submitBtn.textContent = "✨ Yangi hisob yaratish";
+        playTone(392.00, 0.12, "triangle", 0.06);
       }
-      persistState();
     }
 
-    function togglePasswordVisibility() {
-      const input = document.getElementById("authPassword");
-      if (!input) return;
-      input.type = input.type === "password" ? "text" : "password";
+    // --- YORDAMCHI FUNKSIYALAR ---
+    function showStatus(msg, isError = false) {
+      const el = document.getElementById("statusMsg");
+      el.style.color = isError ? "#f87171" : "#34d399";
+      el.textContent = msg;
+      if (msg) {
+        setTimeout(() => { if (el.textContent === msg) el.textContent = ""; }, 4500);
+      }
     }
 
-    function handleAuthSubmit(event) {
-      event.preventDefault();
+    function renderAvatarHTML(avatarVal) {
+      if (avatarVal && avatarVal.startsWith("data:image")) {
+        return `<img src="${avatarVal}" alt="avatar" />`;
+      }
+      return avatarVal || "😎";
+    }
+
+    function setEmojiAvatar(emoji) {
+      selectedAvatar = emoji;
+      document.getElementById("avatarPreview").innerHTML = emoji;
+    }
+
+    function handleImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          const canvas = document.createElement("canvas");
+          const size = 96;
+          canvas.width = size;
+          canvas.height = size;
+          const ctx = canvas.getContext("2d");
+          ctx.drawImage(img, 0, 0, size, size);
+          selectedAvatar = canvas.toDataURL("image/jpeg", 0.72);
+          document.getElementById("avatarPreview").innerHTML = renderAvatarHTML(selectedAvatar);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function switchView(viewId) {
+      ["authView", "gameView", "leaderboardView"].forEach(id => {
+        document.getElementById(id).classList.add("hidden");
+      });
+      document.getElementById(viewId).classList.remove("hidden");
+    }
+
+    // --- SUPABASE REST API SO'ROVLARI ---
+    function sbHeaders(prefer = "return=representation") {
+      return {
+        "apikey": SUPABASE_KEY,
+        "Authorization": `Bearer ${SUPABASE_KEY}`,
+        "Content-Type": "application/json",
+        "Prefer": prefer
+      };
+    }
+
+    async function sbFetch(path, options = {}) {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, {
+        ...options,
+        headers: { ...sbHeaders(), ...(options.headers || {}) }
+      });
+      if (!res.ok) {
+        const errText = await res.text();
+        throw new Error(errText || `HTTP ${res.status}`);
+      }
+      const text = await res.text();
+      return text ? JSON.parse(text) : null;
+    }
+
+    // --- LOGIN VA RO'YXATDAN O'TISH ---
+    async function loginOrRegister() {
+      const username = document.getElementById("loginUser").value.trim();
+      const password = document.getElementById("loginPass").value.trim();
+
+      if (!username || !password) {
+        showStatus("Iltimos, login va parolni kiriting!", true);
+        return;
+      }
+
+      const btn = document.getElementById("authBtn");
+      btn.disabled = true;
+      btn.textContent = "Tekshirilmoqda...";
+
       try {
-        const userEl = document.getElementById("authUsername");
-        const passEl = document.getElementById("authPassword");
-        const username = (userEl.value || "").trim();
-        const password = passEl.value || "";
+        const encoded = encodeURIComponent(username);
+        const existing = await sbFetch(`${TABLE_NAME}?username=eq.${encoded}&select=*`);
 
-        if (!username) {
-          showToast("Iltimos, foydalanuvchi nomini kiriting.", "error");
-          return;
-        }
-        if (password.length < 3) {
-          showToast("Parol kamida 3 ta belgidan iborat bo'lishi kerak.", "error");
-          return;
-        }
-
-        const existingUser = appState.users[username];
-
-        if (appState.authTab === "register") {
-          if (existingUser) {
-            showToast("Bu login allaqachon band. 'Kirish' bo'limidan kiring yoki boshqa nom tanlang.", "warn");
+        if (existing && existing.length > 0) {
+          const user = existing[0];
+          if (user.password && user.password !== password) {
+            showStatus("Parol noto'g'ri! Boshqa parol kiriting.", true);
+            btn.disabled = false;
+            btn.textContent = "🚀 Kirish / Ro'yxatdan o'tish";
             return;
           }
-          appState.users[username] = {
+          currentUser = user;
+          if (selectedAvatar && selectedAvatar.startsWith("data:image")) {
+            await sbFetch(`${TABLE_NAME}?id=eq.${user.id}`, {
+              method: "PATCH",
+              body: JSON.stringify({ avatar: selectedAvatar })
+            });
+            currentUser.avatar = selectedAvatar;
+          }
+          showStatus(`Xush kelibsiz, ${currentUser.username}!`);
+        } else {
+          // Yangi foydalanuvchi yaratish
+          const payload = {
             username,
-            password,
-            avatar: appState.draftAvatar || PRESET_AVATARS[0],
             wins: 0,
             losses: 0,
             draws: 0,
-            streak: 0,
-            bestStreak: 0,
-            unlimitedMistakes: 0
+            avatar: selectedAvatar
           };
-          appState.currentUser = username;
-          persistState();
-          audioEngine.sfx("win");
-          showToast(`Xush kelibsiz, ${username}! Hisob yaratildi.`, "success");
-          enterGameView();
-        } else {
-          // Kirish rejimi: agar foydalanuvchi bor bo'lsa parolni tekshiramiz;
-          // agar yangi nom yozilgan bo'lsa, foydalanuvchiga qulaylik uchun avtomatik ro'yxatdan o'tkazib kiritamiz
-          if (existingUser) {
-            if (existingUser.password !== password) {
-              showToast("Parol noto'g'ri! Qayta urinib ko'ring.", "error");
-              audioEngine.sfx("lose");
-              return;
-            }
-            if (appState.draftAvatar && appState.draftAvatar !== PRESET_AVATARS[0]) {
-              existingUser.avatar = appState.draftAvatar;
-            }
-          } else {
-            appState.users[username] = {
-              username,
-              password,
-              avatar: appState.draftAvatar || PRESET_AVATARS[0],
-              wins: 0,
-              losses: 0,
-              draws: 0,
-              streak: 0,
-              bestStreak: 0,
-              unlimitedMistakes: 0
-            };
+          if (supportsPasswordColumn) payload.password = password;
+
+          let created;
+          try {
+            created = await sbFetch(TABLE_NAME, {
+              method: "POST",
+              body: JSON.stringify(payload)
+            });
+          } catch (e) {
+            // Agar jadvalda password ustuni bo'lmasa, parolsiz saqlaydi
+            supportsPasswordColumn = false;
+            delete payload.password;
+            created = await sbFetch(TABLE_NAME, {
+              method: "POST",
+              body: JSON.stringify(payload)
+            });
           }
-          appState.currentUser = username;
-          persistState();
-          audioEngine.sfx("win");
-          showToast(`Tizimga kirdingiz: ${username}`, "success");
-          enterGameView();
+          currentUser = created[0];
+          showStatus(`Yangi akkaunt yaratildi: ${currentUser.username}!`);
         }
+
+        enterGame();
       } catch (err) {
-        showToast("Kirishda xatolik yuz berdi, qayta urinib ko'ring.", "error");
+        console.error(err);
+        showStatus("Supabase ulanishida xato: " + err.message, true);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "🚀 Kirish / Ro'yxatdan o'tish";
       }
     }
 
-    function quickDemoLogin() {
-      const demoName = "Mehmon";
-      if (!appState.users[demoName]) {
-        appState.users[demoName] = {
-          username: demoName,
-          password: "123",
-          avatar: appState.draftAvatar || PRESET_AVATARS[0],
-          wins: 0,
-          losses: 0,
-          draws: 0,
-          streak: 0,
-          bestStreak: 0,
-          unlimitedMistakes: 0
-        };
-      }
-      appState.currentUser = demoName;
-      persistState();
-      audioEngine.sfx("win");
-      showToast("Tezkor kirish muvaffaqiyatli!", "success");
-      enterGameView();
+    function enterGame() {
+      mistakeCounter = 0;
+      document.getElementById("playerNameDisplay").textContent = currentUser.username;
+      document.getElementById("playerAvatar").innerHTML = renderAvatarHTML(currentUser.avatar);
+      updateStatsUI();
+      setMode(0);
+      switchView("gameView");
     }
 
-    function logoutUser() {
-      stopBlitzTimer();
-      appState.currentUser = null;
-      persistState();
-      document.getElementById("gameSection").classList.add("hidden");
-      document.getElementById("authSection").classList.remove("hidden");
-      const preview = document.getElementById("authAvatarPreview");
-      if (preview) preview.src = appState.draftAvatar || PRESET_AVATARS[0];
-      showToast("Hisobdan chiqdingiz.", "info");
+    function logout() {
+      clearInterval(timerInterval);
+      currentUser = null;
+      switchView("authView");
     }
 
-    /**
-     * 3 XIL O'YIN REJIMI:
-     * 1) classic: Oddiy rejim
-     * 2) blitz: 5 soniyalik tezkor taymer
-     * 3) unlimited: Cheksiz xato qilish imkoniyati (xato qilsa ham o'yin/urinish to'xtamaydi)
-     */
-    let blitzInterval = null;
-    let blitzTimeLeft = 5.0;
-
-    function stopBlitzTimer() {
-      if (blitzInterval) {
-        clearInterval(blitzInterval);
-        blitzInterval = null;
-      }
+    function updateStatsUI() {
+      if (!currentUser) return;
+      document.getElementById("statWins").textContent = currentUser.wins || 0;
+      document.getElementById("statLosses").textContent = currentUser.losses || 0;
+      document.getElementById("statDraws").textContent = currentUser.draws || 0;
+      document.getElementById("statMistakes").textContent = mistakeCounter;
     }
 
-    function startBlitzTimer() {
-      stopBlitzTimer();
-      if (appState.selectedMode !== "blitz" || !appState.currentUser) return;
-
-      blitzTimeLeft = 5.0;
-      const timerEl = document.getElementById("blitzTimerValue");
-      if (timerEl) timerEl.textContent = blitzTimeLeft.toFixed(1) + "s";
-
-      blitzInterval = setInterval(() => {
-        blitzTimeLeft = Math.max(0, blitzTimeLeft - 0.1);
-        if (timerEl) timerEl.textContent = blitzTimeLeft.toFixed(1) + "s";
-
-        if (blitzTimeLeft <= 0) {
-          stopBlitzTimer();
-          applyRoundOutcome("Vaqt tugadi", "Tosh", "lose", "5 soniya ichida tanlov qilinmadi — raund xato bilan yakunlandi!");
-          // Tezkor rejimda keyingisi darhol boshlanadi
-          startBlitzTimer();
-        }
-      }, 100);
-    }
-
-    function selectMode(mode) {
-      const validModes = ["classic", "blitz", "unlimited"];
-      appState.selectedMode = validModes.includes(mode) ? mode : "classic";
-      persistState();
-      syncModeUI();
-      if (appState.selectedMode === "blitz" && appState.currentUser) {
-        startBlitzTimer();
-      } else {
-        stopBlitzTimer();
-      }
-      audioEngine.sfx("click");
-    }
-
-    function syncModeUI() {
-      const mode = appState.selectedMode;
-      const cards = {
-        classic: document.getElementById("modeCard-classic"),
-        blitz: document.getElementById("modeCard-blitz"),
-        unlimited: document.getElementById("modeCard-unlimited")
-      };
-
-      Object.keys(cards).forEach((k) => {
-        if (!cards[k]) return;
-        if (k === mode) {
-          cards[k].className = "text-left rounded-3xl p-5 bg-slate-900/95 border-2 border-sky-400 shadow-lg transition cursor-pointer";
-        } else {
-          cards[k].className = "text-left rounded-3xl p-5 bg-slate-900/75 border-2 border-slate-800 hover:border-slate-600 transition cursor-pointer";
-        }
+    // --- 3 XIL O'YIN REJIMI ---
+    function setMode(mode) {
+      gameMode = mode;
+      [0, 1, 2].forEach(i => {
+        document.getElementById(`mode${i}`).classList.toggle("active", i === mode);
       });
 
-      const badge = document.getElementById("activeModeBadge");
-      const statusText = document.getElementById("modeStatusText");
-      const blitzBox = document.getElementById("blitzTimerBox");
-      const unlimBox = document.getElementById("unlimitedMistakeBox");
-      const hintEl = document.getElementById("roundHintDisplay");
-      const user = appState.currentUser ? appState.users[appState.currentUser] : null;
+      const descs = [
+        "1-rejim: Oddiy klassik o'yin",
+        "2-rejim: Tezkor (har yurishga 5 soniya)",
+        "3-rejim: Cheksiz xato qilish imkoniyati (to'xtovsiz mashq)"
+      ];
+      document.getElementById("modeDesc").textContent = descs[mode];
 
-      if (blitzBox) blitzBox.className = mode === "blitz" ? "flex items-center gap-2 px-3 py-1 rounded-xl bg-amber-500/15 border border-amber-400/40 text-amber-300 font-extrabold text-sm" : "hidden";
-      if (unlimBox) unlimBox.className = mode === "unlimited" ? "flex items-center gap-2 px-3 py-1 rounded-xl bg-emerald-500/15 border border-emerald-400/40 text-emerald-300 font-bold text-xs sm:text-sm" : "hidden";
-
-      const mistakeCountEl = document.getElementById("unlimitedMistakeCount");
-      if (mistakeCountEl && user) {
-        mistakeCountEl.textContent = String(user.unlimitedMistakes || 0);
-      }
-
-      if (mode === "classic") {
-        if (badge) badge.textContent = "1-Rejim: Oddiy";
-        if (statusText) statusText.textContent = "Oddiy rejim faol";
-        if (hintEl) hintEl.textContent = "1-Rejim: Shoshilmasdan o'ynang va g'alaba to'plang.";
-      } else if (mode === "blitz") {
-        if (badge) badge.textContent = "2-Rejim: Tezkor (5s)";
-        if (statusText) statusText.textContent = "Tezkor rejim — 5 soniya ichida tanlang!";
-        if (hintEl) hintEl.textContent = "2-Rejim: Har raundga 5 soniya taymer ishlaydi.";
+      clearInterval(timerInterval);
+      const timerBadge = document.getElementById("timerBadge");
+      if (mode === 1) {
+        timerBadge.classList.remove("hidden");
+        resetSpeedTimer();
       } else {
-        if (badge) badge.textContent = "3-Rejim: Cheksiz xato";
-        if (statusText) statusText.textContent = "Cheksiz xato rejimi — xato qilsangiz ham davom eting!";
-        if (hintEl) hintEl.textContent = "3-Rejim: Xatolar soni cheklanmagan. Xato qilsangiz ham to'xtamaysiz!";
+        timerBadge.classList.add("hidden");
       }
     }
 
-    function determineWinner(playerChoice, botChoice) {
-      if (playerChoice === botChoice) return "draw";
-      if (
+    function resetSpeedTimer() {
+      clearInterval(timerInterval);
+      timeLeft = 5;
+      const timerBadge = document.getElementById("timerBadge");
+      timerBadge.textContent = `⏱ Qolgan vaqt: ${timeLeft}s`;
+      timerInterval = setInterval(() => {
+        if (!currentUser || gameMode !== 1) {
+          clearInterval(timerInterval);
+          return;
+        }
+        timeLeft--;
+        timerBadge.textContent = `⏱ Qolgan vaqt: ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          handleTimeoutLoss();
+        }
+      }, 1000);
+    }
+
+    async function handleTimeoutLoss() {
+      mistakeCounter++;
+      currentUser.losses = (currentUser.losses || 0) + 1;
+      playSfx("lose");
+      document.getElementById("resultBox").innerHTML =
+        `<span style="color:var(--bad); font-weight:700;">⏰ Vaqt tugadi!</span><br>5 soniya ichida yurish qilmadingiz (+1 mag'lubiyat).`;
+      updateStatsUI();
+      await syncUserStats();
+      if (gameMode === 1) resetSpeedTimer();
+    }
+
+    // --- O'YIN JARAYONI ---
+    async function playRound(playerChoice) {
+      if (!currentUser) return;
+      if (gameMode === 1) resetSpeedTimer();
+
+      const options = ["Tosh", "Qaychi", "Qog'oz"];
+      const botChoice = options[Math.floor(Math.random() * options.length)];
+
+      let outcomeText = "";
+      let outcomeColor = "var(--accent)";
+
+      if (playerChoice === botChoice) {
+        currentUser.draws = (currentUser.draws || 0) + 1;
+        outcomeText = "🤝 Durang!";
+        playSfx("draw");
+      } else if (
         (playerChoice === "Tosh" && botChoice === "Qaychi") ||
         (playerChoice === "Qaychi" && botChoice === "Qog'oz") ||
         (playerChoice === "Qog'oz" && botChoice === "Tosh")
       ) {
-        return "win";
+        currentUser.wins = (currentUser.wins || 0) + 1;
+        outcomeText = "🎉 Siz yutdingiz!";
+        outcomeColor = "var(--good)";
+        playSfx("win");
+      } else {
+        mistakeCounter++;
+        currentUser.losses = (currentUser.losses || 0) + 1;
+        outcomeText = gameMode === 2
+          ? "♾️ Xato qildingiz, lekin o'yin davom etadi!"
+          : "💻 Kompyuter yutdi!";
+        outcomeColor = "var(--bad)";
+        playSfx("lose");
       }
-      return "lose";
+
+      document.getElementById("resultBox").innerHTML = `
+        <div style="font-size:14px; color:var(--muted);">Siz: <strong style="color:#fff;">${playerChoice}</strong> &nbsp;|&nbsp; Kompyuter: <strong style="color:#fff;">${botChoice}</strong></div>
+        <div style="font-size:18px; font-weight:700; color:${outcomeColor}; margin-top:6px;">${outcomeText}</div>
+      `;
+
+      updateStatsUI();
+      await syncUserStats();
     }
 
-    function playRound(playerChoice) {
+    async function syncUserStats() {
+      if (!currentUser || !currentUser.id) return;
       try {
-        if (!appState.currentUser || !appState.users[appState.currentUser]) {
-          showToast("Avval hisobga kiring.", "warn");
+        await sbFetch(`${TABLE_NAME}?id=eq.${currentUser.id}`, {
+          method: "PATCH",
+          body: JSON.stringify({
+            wins: currentUser.wins,
+            losses: currentUser.losses,
+            draws: currentUser.draws
+          })
+        });
+      } catch (err) {
+        showStatus("Natija bazaga yozilmadi: " + err.message, true);
+      }
+    }
+
+    // --- UMUMIY REYTING ---
+    async function openLeaderboard() {
+      clearInterval(timerInterval);
+      switchView("leaderboardView");
+      await loadLeaderboard();
+    }
+
+    function backFromLeaderboard() {
+      if (currentUser) {
+        switchView("gameView");
+        if (gameMode === 1) resetSpeedTimer();
+      } else {
+        switchView("authView");
+      }
+    }
+
+    async function loadLeaderboard() {
+      const tbody = document.getElementById("leaderboardBody");
+      tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Yuklanmoqda...</td></tr>`;
+
+      try {
+        const rows = await sbFetch(`${TABLE_NAME}?select=*&order=wins.desc,draws.desc`);
+        if (!rows || rows.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="5" style="text-align:center;">Hozircha o'yinchilar yo'q</td></tr>`;
           return;
         }
-        const choices = ["Tosh", "Qaychi", "Qog'oz"];
-        const botChoice = choices[Math.floor(Math.random() * choices.length)];
-        const outcome = determineWinner(playerChoice, botChoice);
 
-        let customNote = "";
-        if (appState.selectedMode === "unlimited" && outcome === "lose") {
-          customNote = "Cheksiz xato rejimida xato qildingiz, lekin o'yin to'xtamaydi — yana urinib ko'ring!";
-        } else if (appState.selectedMode === "blitz") {
-          startBlitzTimer();
-        }
-
-        applyRoundOutcome(playerChoice, botChoice, outcome, customNote);
-      } catch (err) {
-        showToast("Raundni hisoblashda xato yuz berdi.", "error");
-      }
-    }
-
-    function applyRoundOutcome(playerChoice, botChoice, outcome, customNote = "") {
-      const user = appState.users[appState.currentUser];
-      if (!user) return;
-
-      const choicesDisplay = document.getElementById("roundChoicesDisplay");
-      const verdictDisplay = document.getElementById("roundVerdictDisplay");
-      const hintDisplay = document.getElementById("roundHintDisplay");
-
-      if (choicesDisplay) {
-        choicesDisplay.innerHTML = `Siz: <strong class="text-white">${playerChoice}</strong> &nbsp;|&nbsp; Raqib: <strong class="text-sky-300">${botChoice}</strong>`;
-      }
-
-      if (outcome === "win") {
-        user.wins = (user.wins || 0) + 1;
-        user.streak = (user.streak || 0) + 1;
-        user.bestStreak = Math.max(user.bestStreak || 0, user.streak);
-        if (verdictDisplay) {
-          verdictDisplay.textContent = "🎉 G'alaba qozondingiz!";
-          verdictDisplay.className = "text-lg sm:text-xl font-extrabold text-emerald-400";
-        }
-        audioEngine.sfx("win");
-      } else if (outcome === "draw") {
-        user.draws = (user.draws || 0) + 1;
-        if (verdictDisplay) {
-          verdictDisplay.textContent = "🤝 Durang!";
-          verdictDisplay.className = "text-lg sm:text-xl font-extrabold text-amber-300";
-        }
-        audioEngine.sfx("draw");
-      } else {
-        user.losses = (user.losses || 0) + 1;
-        user.streak = 0;
-        if (appState.selectedMode === "unlimited") {
-          user.unlimitedMistakes = (user.unlimitedMistakes || 0) + 1;
-        }
-        if (verdictDisplay) {
-          verdictDisplay.textContent = appState.selectedMode === "unlimited"
-            ? "❌ Xato (Cheksiz xato rejimi — davom eting!)"
-            : "💻 Raqib yutdi!";
-          verdictDisplay.className = "text-lg sm:text-xl font-extrabold text-rose-400";
-        }
-        audioEngine.sfx("lose");
-      }
-
-      if (hintDisplay && customNote) {
-        hintDisplay.textContent = customNote;
-      }
-
-      persistState();
-      renderProfileStats();
-      renderLeaderboard();
-      syncModeUI();
-    }
-
-    /**
-     * STATISTIKA VA REYTING JADVALI
-     */
-    function renderProfileStats() {
-      const user = appState.currentUser ? appState.users[appState.currentUser] : null;
-      if (!user) return;
-
-      const nameEl = document.getElementById("profileNameDisplay");
-      const avatarEl = document.getElementById("profileAvatarImg");
-      const winsEl = document.getElementById("statWins");
-      const lossesEl = document.getElementById("statLosses");
-      const drawsEl = document.getElementById("statDraws");
-      const streakEl = document.getElementById("statStreak");
-
-      if (nameEl) nameEl.textContent = user.username;
-      if (avatarEl) {
-        avatarEl.src = user.avatar || PRESET_AVATARS[0];
-        avatarEl.onerror = function () {
-          this.src = PRESET_AVATARS[0];
-        };
-      }
-      if (winsEl) winsEl.textContent = String(user.wins || 0);
-      if (lossesEl) lossesEl.textContent = String(user.losses || 0);
-      if (drawsEl) drawsEl.textContent = String(user.draws || 0);
-      if (streakEl) streakEl.textContent = String(user.streak || 0);
-    }
-
-    function toggleSortOrder() {
-      appState.sortBy = appState.sortBy === "winsDesc" ? "streakDesc" : "winsDesc";
-      const label = document.getElementById("sortOrderLabel");
-      if (label) {
-        label.textContent = appState.sortBy === "winsDesc" ? "G'alaba ↓" : "Rekord ↓";
-      }
-      persistState();
-      renderLeaderboard();
-      audioEngine.sfx("click");
-    }
-
-    function resetCurrentUserStats() {
-      const user = appState.currentUser ? appState.users[appState.currentUser] : null;
-      if (!user) return;
-      user.wins = 0;
-      user.losses = 0;
-      user.draws = 0;
-      user.streak = 0;
-      user.bestStreak = 0;
-      user.unlimitedMistakes = 0;
-      persistState();
-      renderProfileStats();
-      renderLeaderboard();
-      syncModeUI();
-      showToast("Statistikangiz nolga tushirildi.", "info");
-    }
-
-    function renderLeaderboard() {
-      const tbody = document.getElementById("leaderboardBody");
-      if (!tbody) return;
-
-      const list = Object.values(appState.users || {}).sort((a, b) => {
-        if (appState.sortBy === "streakDesc") {
-          return (b.bestStreak || 0) - (a.bestStreak || 0) || (b.wins || 0) - (a.wins || 0);
-        }
-        return (b.wins || 0) - (a.wins || 0) || (b.bestStreak || 0) - (a.bestStreak || 0);
-      });
-
-      if (list.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400">Hozircha o'yinchilar yo'q</td></tr>`;
-        return;
-      }
-
-      tbody.innerHTML = list.map((p, index) => {
-        const isCurrent = p.username === appState.currentUser;
-        const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : String(index + 1);
-        const safeAvatar = p.avatar || PRESET_AVATARS[0];
-        const rowClass = isCurrent ? "bg-sky-500/10 text-white font-semibold" : "text-slate-200";
-
-        return `
-          <tr class="${rowClass} transition">
-            <td class="py-2.5 px-2 whitespace-nowrap">${medal}</td>
-            <td class="py-2.5 px-2">
-              <div class="flex items-center gap-2">
-                <img src="${safeAvatar}" alt="${p.username}" class="w-7 h-7 rounded-lg object-cover border border-slate-700 bg-slate-950 shrink-0" />
-                <span class="truncate max-w-[110px] sm:max-w-[140px]">${p.username}</span>
+        tbody.innerHTML = rows.map((u, idx) => `
+          <tr>
+            <td><strong>${idx + 1}</strong></td>
+            <td>
+              <div class="user-cell">
+                <span class="mini-avatar">${renderAvatarHTML(u.avatar)}</span>
+                <span>${escapeHtml(u.username || "Noma'lum")}</span>
               </div>
             </td>
-            <td class="py-2.5 px-2 text-right font-bold text-emerald-400">${p.wins || 0}</td>
-            <td class="py-2.5 px-2 text-right text-rose-400">${p.losses || 0}</td>
-            <td class="py-2.5 px-2 text-right text-amber-300">${p.bestStreak || 0}</td>
+            <td style="color:var(--good); font-weight:700;">${u.wins || 0}</td>
+            <td style="color:var(--bad);">${u.losses || 0}</td>
+            <td style="color:var(--accent);">${u.draws || 0}</td>
           </tr>
-        `;
-      }).join("");
-    }
-
-    function enterGameView() {
-      document.getElementById("authSection").classList.add("hidden");
-      document.getElementById("gameSection").classList.remove("hidden");
-      renderProfileStats();
-      renderLeaderboard();
-      syncModeUI();
-      if (appState.selectedMode === "blitz") {
-        startBlitzTimer();
-      }
-    }
-
-    // Dastlabki ishga tushirish
-    window.addEventListener("DOMContentLoaded", () => {
-      try {
-        setupDragAndDrop();
-        switchAuthTab(appState.authTab);
-        syncAudioUI();
-
-        const authPreview = document.getElementById("authAvatarPreview");
-        if (authPreview) {
-          authPreview.src = appState.draftAvatar || PRESET_AVATARS[0];
-        }
-
-        const sortLabel = document.getElementById("sortOrderLabel");
-        if (sortLabel) {
-          sortLabel.textContent = appState.sortBy === "winsDesc" ? "G'alaba ↓" : "Rekord ↓";
-        }
-
-        if (appState.audio.musicPlaying) {
-          appState.audio.musicPlaying = false;
-          syncAudioUI();
-        }
-
-        if (appState.currentUser && appState.users[appState.currentUser]) {
-          enterGameView();
-        }
+        `).join("");
       } catch (err) {
-        showToast("Ilovani yuklashda xato yuz berdi.", "error");
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#f87171;">Xato: ${escapeHtml(err.message)}</td></tr>`;
       }
-    });
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, s => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[s]));
+    }
   </script>
 </body>
 </html>
